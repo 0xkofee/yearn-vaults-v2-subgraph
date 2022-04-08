@@ -42,7 +42,6 @@ const createNewVaultFromAddress = (
   let vaultContract = VaultContract.bind(vaultAddress);
   let token = getOrCreateToken(vaultContract.token());
   let shareToken = getOrCreateToken(vaultAddress);
-
   vaultEntity.transaction = transaction.id;
   vaultEntity.token = token.id;
   vaultEntity.shareToken = shareToken.id;
@@ -102,7 +101,7 @@ export function create(
   apiVersion: string,
   createTemplate: boolean
 ): Vault {
-  log.info('[Vault] Create vault', []);
+  log.info('[Vault] Create vault {}', [vault.toHexString()]);
   let id = vault.toHexString();
   let vaultEntity = Vault.load(id);
   if (vaultEntity == null) {

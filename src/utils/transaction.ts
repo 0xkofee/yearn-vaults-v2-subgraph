@@ -36,6 +36,13 @@ export function getOrCreateTransactionFromCall(
   return transaction;
 }
 
+export function getTransactionId(
+  transactionHash: string,
+  logIndex: string
+): string {
+  return transactionHash.concat('-').concat(logIndex.toString());
+}
+
 function _getOrCreateTransaction(
   ethTransaction: ethereum.Transaction,
   logIndex: BigInt,
@@ -51,10 +58,10 @@ function _getOrCreateTransaction(
       ethTransaction.index.toString(),
     ]
   );
-  let id = ethTransaction.hash
-    .toHexString()
-    .concat('-')
-    .concat(logIndex.toString());
+  let id = getTransactionId(
+    ethTransaction.hash.toHexString(),
+    logIndex.toString()
+  );
   let transaction = Transaction.load(id);
   if (transaction == null) {
     transaction = new Transaction(id);
