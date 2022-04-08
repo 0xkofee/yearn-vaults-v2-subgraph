@@ -518,6 +518,14 @@ export function handleTransfer(event: TransferEvent): void {
     event.params.sender.toHexString() != ZERO_ADDRESS &&
     event.params.receiver.toHexString() != ZERO_ADDRESS
   ) {
+    if (!vaultLibrary.isVault(event.address)) {
+      log.info(
+        '[Transfer] Transfer {} is not on behalf of a vault entity. Not processing.',
+        [event.transaction.hash.toHexString()]
+      );
+      return;
+    }
+
     log.info(
       '[Vault mappings] Processing transfer: From: {} - To: {}. TX hash: {}',
       [
