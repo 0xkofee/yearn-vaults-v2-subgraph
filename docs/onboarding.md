@@ -20,7 +20,13 @@ Finally, once you have cloned the repo, install the dependencies:
 
 `yarn install`
 
-> Unfortunately, we still didn't implement tests in the repo for our handlers. If you are available to help us, feel free to create a PR with the first tests. See more info how to start contributing [here](#Do-you-want-to-contribute)
+`yarn prepare:mainnet`
+
+`yarn test`
+
+## Deploying to the Hosted Service
+
+If you'd like to try to deploy the subgraph, you can do so for free on thegraph's hosted service: https://thegraph.com/docs/en/hosted-service/deploy-subgraph-hosted/
 
 ## Important Concepts
 
