@@ -31,10 +31,11 @@ export function getOrCreate(
   shareAmount: BigInt,
   transaction: Transaction
 ): Transfer {
-  log.debug('[Transfer] Get or create. from: {} to: {} txnId: {}', [
+  log.debug('[Transfer] Get or create. from: {} to: {} txnId: {} token: {}', [
     fromAccount.id,
     toAccount.id,
     transaction.id,
+    token.id,
   ]);
   let id = buildIdFromAccountToAccountAndTransaction(
     fromAccount,
@@ -42,7 +43,7 @@ export function getOrCreate(
     transaction
   );
 
-  let tokenAmountUsdc = usdcPrice(token, amount);
+  let tokenAmountUsdc = usdcPrice(shareToken, shareAmount);
   let isFeeToStrategy = tokenFeeLibrary.isFeeToStrategy(
     vault,
     toAccount,
