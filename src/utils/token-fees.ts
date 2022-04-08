@@ -5,6 +5,7 @@ import {
   Transaction,
   Vault,
 } from '../../generated/schema';
+import { Strategy as StrategyContract } from '../../generated/templates/Vault/Strategy';
 import { Address, BigInt, log } from '@graphprotocol/graph-ts';
 import { BIGINT_ZERO } from './constants';
 
@@ -17,10 +18,20 @@ export function isFeeToStrategy(
   toAccount: Account,
   amount: BigInt
 ): boolean {
-  // todo: check vault contract to see if this strategy exists.
-  // otherwise, income sent to another strategy will be counted as income (delegated strategies)
-  let strategy = Strategy.load(toAccount.id);
-  if (strategy !== null) {
+  // this can be optimized once strategist is stored in the Strategy entity
+  let benefactorIsStrategist: boolean = false;
+  for (let i = 0; i < vault.strategies.length; i++) {
+    let contract = StrategyContract.bind(
+      Address.fromString(vault.strategies[i])
+    );
+    let strategist = contract.strategist();
+
+    if (Address.fromString(toAccount.id).equals(strategist)) {
+      benefactorIsStrategist = true;
+      break;
+    }
+  }
+  if (benefactorIsStrategist) {
     addUnrecognizedStrategyFees(vault, amount);
     return true;
   } else {
