@@ -1,6 +1,6 @@
-import { MockTransaction } from '../triggerMocks/mockTransaction';
+import { MockTransaction } from '../mappingParamBuilders/mockTransaction';
 import { assert } from 'matchstick-as/assembly/index';
-import { MockBlock } from '../triggerMocks/mockBlock';
+import { MockBlock } from '../mappingParamBuilders/mockBlock';
 
 export function validateTransactionState(
   txnParams: MockTransaction,

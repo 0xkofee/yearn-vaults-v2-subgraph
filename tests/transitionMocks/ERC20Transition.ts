@@ -1,8 +1,8 @@
 import { BigInt } from '@graphprotocol/graph-ts';
-import { MockBlock } from '../triggerMocks/mockBlock';
+import { MockBlock } from '../mappingParamBuilders/mockBlock';
 import { TokenStub } from '../stubs/tokenStateStub';
 import { handleTransfer } from '../../src/mappings/vaultMappings';
-import { MockTransferEvent } from '../triggerMocks/mockTransfer';
+import { TransferEventBuilder } from '../mappingParamBuilders/transferParamBuilder';
 import { BIGINT_ZERO, ZERO_ADDRESS } from '../../src/utils/constants';
 import { fatalTestError } from '../util';
 
@@ -10,7 +10,7 @@ export class TransferERC20Transition {
   preTransitionStub: TokenStub;
   postTransitionStub: TokenStub;
 
-  mockEvent: MockTransferEvent;
+  mockEvent: TransferEventBuilder;
 
   constructor(
     sender: string,
@@ -57,7 +57,7 @@ export class TransferERC20Transition {
     );
     this.postTransitionStub = postTransitionStub;
 
-    this.mockEvent = new MockTransferEvent(
+    this.mockEvent = new TransferEventBuilder(
       stub.address,
       sender,
       recipient,
@@ -76,7 +76,7 @@ export class MintERC20Transition {
   preTransitionStub: TokenStub;
   postTransitionStub: TokenStub;
 
-  mockEvent: MockTransferEvent;
+  mockEvent: TransferEventBuilder;
 
   constructor(
     recipient: string,
@@ -102,7 +102,7 @@ export class MintERC20Transition {
     );
     this.postTransitionStub = postTransitionStub;
 
-    this.mockEvent = new MockTransferEvent(
+    this.mockEvent = new TransferEventBuilder(
       stub.address,
       ZERO_ADDRESS,
       recipient,
@@ -121,7 +121,7 @@ export class BurnERC20Transition {
   preTransitionStub: TokenStub;
   postTransitionStub: TokenStub;
 
-  mockEvent: MockTransferEvent;
+  mockEvent: TransferEventBuilder;
 
   constructor(
     sender: string,
@@ -157,7 +157,7 @@ export class BurnERC20Transition {
     postTransitionStub.setAccountBalance(sender, newSenderBalance.toString());
     this.postTransitionStub = postTransitionStub;
 
-    this.mockEvent = new MockTransferEvent(
+    this.mockEvent = new TransferEventBuilder(
       stub.address,
       sender,
       ZERO_ADDRESS,

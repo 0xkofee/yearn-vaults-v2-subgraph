@@ -1,7 +1,7 @@
 import { MockBlock } from './mockBlock';
 import { MockTransaction } from './mockTransaction';
 
-export class MockTriggerBase {
+export class ParamFactoryBase {
   transaction: MockTransaction;
   block: MockBlock;
 

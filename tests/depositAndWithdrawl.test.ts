@@ -29,10 +29,7 @@ test('Test handleDeposit (call)', () => {
   let amount = '79056085';
   let recipient = defaults.senderAddress;
   let shareTokenBalances = new Map<string, string>();
-  shareTokenBalances.set(defaults.senderAddress, '0');
-
   let wantTokenBalances = new Map<string, string>();
-  wantTokenBalances.set(VaultStub.DefaultAddress, '0');
   wantTokenBalances.set(recipient, amount);
 
   let vaultEntity = CreateVaultTransition.DefaultVaultWithUnDepositedBalances(

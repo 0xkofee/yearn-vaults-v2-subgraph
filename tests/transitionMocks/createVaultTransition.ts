@@ -1,7 +1,7 @@
 import { Address, log } from '@graphprotocol/graph-ts';
 import { handleNewReleaseInner } from '../../src/mappings/registryMappings';
-import { MockBlock } from '../triggerMocks/mockBlock';
-import { MockNewReleaseEvent } from '../triggerMocks/mockRegistry';
+import { MockBlock } from '../mappingParamBuilders/mockBlock';
+import { NewReleaseEventBuilder } from '../mappingParamBuilders/registryParamBuilder';
 import { TokenStub } from '../stubs/tokenStateStub';
 import { VaultStub } from '../stubs/vaultStateStub';
 
@@ -134,7 +134,7 @@ export class CreateVaultTransition {
   }
 
   stub: VaultStub;
-  releaseEvent: MockNewReleaseEvent;
+  releaseEvent: NewReleaseEventBuilder;
 
   constructor(
     stub: VaultStub | null,
@@ -170,7 +170,7 @@ export class CreateVaultTransition {
       );
     }
 
-    this.releaseEvent = new MockNewReleaseEvent(
+    this.releaseEvent = new NewReleaseEventBuilder(
       registryAddress, // registry address
       releaseId, // release id
       this.stub.shareToken.address, // template address

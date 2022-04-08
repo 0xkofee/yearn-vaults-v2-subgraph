@@ -8,9 +8,9 @@ import {
 } from '../../generated/Registry/Vault';
 import { ethereum, BigInt, Address } from '@graphprotocol/graph-ts';
 import { VaultStub } from '../stubs/vaultStateStub';
-import { MockTriggerBase as MockTriggerBase } from './mockTriggerBase';
+import { ParamFactoryBase as ParamFactoryBase } from './paramFactoryBase';
 
-export class MockWithdrawCall extends MockTriggerBase {
+export class WithdrawCallBuilder extends ParamFactoryBase {
   sharesBurnt: string;
   tokensReturned: string;
   senderAddress: string;
@@ -68,7 +68,7 @@ export class MockWithdrawCall extends MockTriggerBase {
   }
 }
 
-export class MockWithdrawEvent extends MockTriggerBase {
+export class MockWithdrawBuilder extends ParamFactoryBase {
   sharesBurnt: string;
   tokensReturned: string;
   recipient: string;

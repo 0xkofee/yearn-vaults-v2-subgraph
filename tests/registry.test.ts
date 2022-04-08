@@ -1,5 +1,5 @@
 import { clearStore, test, assert } from 'matchstick-as/assembly/index';
-import { MockNewReleaseEvent } from './triggerMocks/mockRegistry';
+import { NewReleaseEventBuilder } from './mappingParamBuilders/registryParamBuilder';
 import { handleNewReleaseInner } from '../src/mappings/registryMappings';
 import { VaultStub } from './stubs/vaultStateStub';
 import { Address } from '@graphprotocol/graph-ts';
@@ -28,7 +28,7 @@ test('Test handleNewRelease', () => {
     TokenStub.DefaultToken(TokenStub.DefaultTokenAddress) // wantToken
   );
 
-  let newReleaseEvent = new MockNewReleaseEvent(
+  let newReleaseEvent = new NewReleaseEventBuilder(
     null, // registry address
     null, // release id
     vaultParams.shareToken.address, // template address

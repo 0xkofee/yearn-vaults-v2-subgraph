@@ -5,18 +5,18 @@ import {
   handleDepositWithAmountAndRecipient,
 } from '../../src/mappings/vaultMappings';
 import { defaults } from '../default';
-import { MockBlock } from '../triggerMocks/mockBlock';
+import { MockBlock } from '../mappingParamBuilders/mockBlock';
 import {
-  MockDepositCall,
-  MockDepositEvent,
-  MockDepositWithAmountAndRecipientCall,
-  MockDepositWithAmountCall,
-} from '../triggerMocks/mockDeposit';
+  DepositCallBuilder,
+  DepositEventBuilder,
+  DepositWithAmountAndRecipientCallBuilder,
+  DepositWithAmountCallBuilder,
+} from '../mappingParamBuilders/depositParamBuilder';
 import { VaultStub } from '../stubs/vaultStateStub';
 import { GenericDepositTransition } from './genericDepositTransition';
 
 export class DepositCallTransition extends GenericDepositTransition {
-  mockCall: MockDepositCall;
+  mockCall: DepositCallBuilder;
 
   constructor(
     preDepositStub: VaultStub,
@@ -26,7 +26,7 @@ export class DepositCallTransition extends GenericDepositTransition {
   ) {
     super(preDepositStub, tokensDeposited, sharesMinted, senderAddress, false);
 
-    this.mockCall = new MockDepositCall(
+    this.mockCall = new DepositCallBuilder(
       defaults.senderAddress,
       this.tokensDeposited,
       this.postDepositStub,
@@ -41,7 +41,7 @@ export class DepositCallTransition extends GenericDepositTransition {
 }
 
 export class DepositWithAmountCallTransition extends GenericDepositTransition {
-  mockCall: MockDepositWithAmountCall;
+  mockCall: DepositWithAmountCallBuilder;
 
   constructor(
     preDepositStub: VaultStub,
@@ -58,7 +58,7 @@ export class DepositWithAmountCallTransition extends GenericDepositTransition {
       suppressMinimumBalanceErrors
     );
 
-    this.mockCall = new MockDepositWithAmountCall(
+    this.mockCall = new DepositWithAmountCallBuilder(
       recipient,
       sharesMinted,
       tokensDeposited,
@@ -74,7 +74,7 @@ export class DepositWithAmountCallTransition extends GenericDepositTransition {
 }
 
 export class DepositWithAmountAndRecipientCallTransition extends GenericDepositTransition {
-  mockCall: MockDepositWithAmountAndRecipientCall;
+  mockCall: DepositWithAmountAndRecipientCallBuilder;
 
   constructor(
     preDepositStub: VaultStub,
@@ -85,7 +85,7 @@ export class DepositWithAmountAndRecipientCallTransition extends GenericDepositT
   ) {
     super(preDepositStub, tokensDeposited, sharesMinted, recipient, false);
 
-    this.mockCall = new MockDepositWithAmountAndRecipientCall(
+    this.mockCall = new DepositWithAmountAndRecipientCallBuilder(
       recipient,
       benefactor,
       sharesMinted,
@@ -102,7 +102,7 @@ export class DepositWithAmountAndRecipientCallTransition extends GenericDepositT
 }
 
 export class DepositEventTransition extends GenericDepositTransition {
-  mockEvent: MockDepositEvent;
+  mockEvent: DepositEventBuilder;
 
   constructor(
     preDepositStub: VaultStub,
@@ -112,7 +112,7 @@ export class DepositEventTransition extends GenericDepositTransition {
   ) {
     super(preDepositStub, tokensDeposited, sharesMinted, senderAddress, false);
 
-    this.mockEvent = new MockDepositEvent(
+    this.mockEvent = new DepositEventBuilder(
       senderAddress,
       this.tokensDeposited,
       this.sharesMinted,

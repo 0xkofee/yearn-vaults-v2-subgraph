@@ -5,7 +5,7 @@ import {
   TransferERC20Transition,
 } from './ERC20Transition';
 import { handleTransfer } from '../../src/mappings/vaultMappings';
-import { MockTransferEvent } from '../triggerMocks/mockTransfer';
+import { TransferEventBuilder } from '../mappingParamBuilders/transferParamBuilder';
 
 export class GenericDepositTransition {
   preDepositStub: VaultStub;
@@ -50,7 +50,7 @@ export class GenericDepositTransition {
 
     if (suppressMinimumBalanceErrors) {
       // overwrite the TransferERC20Transition trigger with the value passed to this transition
-      newWantTokenStub.mockEvent = new MockTransferEvent(
+      newWantTokenStub.mockEvent = new TransferEventBuilder(
         preDepositStub.wantToken.address,
         senderAddress,
         vaultId,

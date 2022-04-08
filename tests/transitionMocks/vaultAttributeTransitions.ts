@@ -4,14 +4,14 @@ import {
   handleUpdatePerformanceFee,
   handleUpdateRewards,
 } from '../../src/mappings/vaultMappings';
-import { MockBlock } from '../triggerMocks/mockBlock';
+import { MockBlock } from '../mappingParamBuilders/mockBlock';
 import { VaultStub } from '../stubs/vaultStateStub';
 import {
   UpdateManagementFee,
   UpdatePerformanceFee,
   UpdateRewards,
 } from '../../generated/Registry/Vault';
-import { GenericAttributeUpdateEvent } from '../triggerMocks/genericUpdateTrigger';
+import { GenericAttributeUpdateEvent } from '../mappingParamBuilders/genericUpdateParam';
 
 export class MockUpdateManagementFeeTransition {
   mockEvent: GenericAttributeUpdateEvent<UpdateManagementFee, BigInt>;

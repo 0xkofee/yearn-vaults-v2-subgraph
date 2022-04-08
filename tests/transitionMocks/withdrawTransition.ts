@@ -2,16 +2,16 @@ import {
   handleWithdraw,
   handleWithdrawEvent,
 } from '../../src/mappings/vaultMappings';
-import { MockBlock } from '../triggerMocks/mockBlock';
+import { MockBlock } from '../mappingParamBuilders/mockBlock';
 import {
-  MockWithdrawCall,
-  MockWithdrawEvent,
-} from '../triggerMocks/mockWithdraw';
+  WithdrawCallBuilder,
+  MockWithdrawBuilder,
+} from '../mappingParamBuilders/withdrawParamBuilder';
 import { VaultStub } from '../stubs/vaultStateStub';
 import { GenericWithdrawTransition } from './genericWithdrawTransition';
 
 export class WithdrawCallTransition extends GenericWithdrawTransition {
-  mockCall: MockWithdrawCall;
+  mockCall: WithdrawCallBuilder;
 
   constructor(
     preWithdrawStub: VaultStub,
@@ -22,7 +22,7 @@ export class WithdrawCallTransition extends GenericWithdrawTransition {
     super(preWithdrawStub, tokensWithdrawn, sharesBurned, recipient);
 
     // create call
-    this.mockCall = new MockWithdrawCall(
+    this.mockCall = new WithdrawCallBuilder(
       this.recipient,
       this.sharesBurnt,
       this.tokensWithdrawn,
@@ -38,7 +38,7 @@ export class WithdrawCallTransition extends GenericWithdrawTransition {
 }
 
 export class WithdrawEventTransition extends GenericWithdrawTransition {
-  mockEvent: MockWithdrawEvent;
+  mockEvent: MockWithdrawBuilder;
 
   constructor(
     preWithdrawStub: VaultStub,
@@ -49,7 +49,7 @@ export class WithdrawEventTransition extends GenericWithdrawTransition {
     super(preWithdrawStub, tokensWithdrawn, sharesBurned, recipient);
 
     // create call
-    this.mockEvent = new MockWithdrawEvent(
+    this.mockEvent = new MockWithdrawBuilder(
       this.recipient,
       this.sharesBurnt,
       this.tokensWithdrawn,

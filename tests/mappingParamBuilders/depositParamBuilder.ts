@@ -8,9 +8,9 @@ import {
 } from '../../generated/Registry/Vault';
 import { ethereum, BigInt, Address } from '@graphprotocol/graph-ts';
 import { VaultStub } from '../stubs/vaultStateStub';
-import { MockTriggerBase } from './mockTriggerBase';
+import { ParamFactoryBase } from './paramFactoryBase';
 
-export class MockDepositCall extends MockTriggerBase {
+export class DepositCallBuilder extends ParamFactoryBase {
   sharesMinted: string;
   vault: VaultStub;
   recipient: string;
@@ -53,7 +53,7 @@ export class MockDepositCall extends MockTriggerBase {
   }
 }
 
-export class MockDepositWithAmountCall extends MockTriggerBase {
+export class DepositWithAmountCallBuilder extends ParamFactoryBase {
   sharesMinted: string;
   tokensDeposited: string;
   vault: VaultStub;
@@ -109,7 +109,7 @@ export class MockDepositWithAmountCall extends MockTriggerBase {
   }
 }
 
-export class MockDepositWithAmountAndRecipientCall extends MockTriggerBase {
+export class DepositWithAmountAndRecipientCallBuilder extends ParamFactoryBase {
   sharesMinted: string;
   tokensDeposited: string;
   vault: VaultStub;
@@ -175,7 +175,7 @@ export class MockDepositWithAmountAndRecipientCall extends MockTriggerBase {
   }
 }
 
-export class MockDepositEvent extends MockTriggerBase {
+export class DepositEventBuilder extends ParamFactoryBase {
   sharesMinted: string;
   tokensDeposited: string;
   recipient: string;

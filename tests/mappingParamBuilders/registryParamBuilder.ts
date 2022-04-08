@@ -3,9 +3,9 @@ import { MockTransaction } from './mockTransaction';
 import { MockBlock } from './mockBlock';
 import { NewRelease } from '../../generated/Registry/Registry';
 import { BigInt, ethereum, log, Address } from '@graphprotocol/graph-ts';
-import { MockTriggerBase } from './mockTriggerBase';
+import { ParamFactoryBase } from './paramFactoryBase';
 
-export class MockNewReleaseEvent extends MockTriggerBase {
+export class NewReleaseEventBuilder extends ParamFactoryBase {
   static DefaultAddress: string = defaults.registryAddress;
 
   registryAddress: string;
@@ -48,7 +48,7 @@ export class MockNewReleaseEvent extends MockTriggerBase {
     if (registryAddress) {
       this.registryAddress = registryAddress;
     } else {
-      this.registryAddress = MockNewReleaseEvent.DefaultAddress;
+      this.registryAddress = NewReleaseEventBuilder.DefaultAddress;
     }
     if (releaseId) {
       this.releaseId = releaseId;

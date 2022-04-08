@@ -6,9 +6,9 @@ import {
   StrategyReported as StrategyReported_v0_3_0_v0_3_1_Event,
 } from '../../generated/Registry/Vault';
 import { Harvested } from '../../generated/templates/Vault/Strategy';
-import { MockTriggerBase } from './mockTriggerBase';
+import { ParamFactoryBase } from './paramFactoryBase';
 
-export class MockStrategyAddedEvent extends MockTriggerBase {
+export class StrategyAddedEventBuilder extends ParamFactoryBase {
   vaultAddress: string;
   strategyAddress: string;
   debtLimit: string;
@@ -81,7 +81,7 @@ export class MockStrategyAddedEvent extends MockTriggerBase {
   }
 }
 
-export class MockHarvestedEvent {
+export class HarvestedEventBuilder {
   profit: string;
   loss: string;
   debtPayment: string;
@@ -159,7 +159,7 @@ export class MockHarvestedEvent {
   }
 }
 
-export class MockStrategyReported_v0_3_0_v0_3_1Event {
+export class StrategyReported_v0_3_0_v0_3_1EventBuilder {
   vault: string;
   strategy: string;
   gain: string;

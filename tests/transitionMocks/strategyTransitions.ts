@@ -2,15 +2,15 @@ import { handleHarvested } from '../../src/mappings/strategyMappings';
 import { handleStrategyReported_v0_3_0_v0_3_1 } from '../../src/mappings/vaultMappings';
 import { StrategyStub } from '../stubs/strategyStateStub';
 import { VaultStub } from '../stubs/vaultStateStub';
-import { MockBlock } from '../triggerMocks/mockBlock';
+import { MockBlock } from '../mappingParamBuilders/mockBlock';
 import {
-  MockHarvestedEvent,
-  MockStrategyReported_v0_3_0_v0_3_1Event,
-} from '../triggerMocks/mockStrategy';
+  HarvestedEventBuilder,
+  StrategyReported_v0_3_0_v0_3_1EventBuilder,
+} from '../mappingParamBuilders/strategyParamBuilder';
 import { MintERC20Transition } from './ERC20Transition';
 
 export class HarvestedTransition {
-  mockEvent: MockHarvestedEvent;
+  mockEvent: HarvestedEventBuilder;
 
   preHarvestStub: StrategyStub;
   postHarvestStub: StrategyStub;
@@ -30,7 +30,7 @@ export class HarvestedTransition {
     this.postHarvestStub = postHarvestStub;
 
     // create event
-    this.mockEvent = new MockHarvestedEvent(
+    this.mockEvent = new HarvestedEventBuilder(
       preHarvestStub.address,
       profit,
       loss,
@@ -47,7 +47,7 @@ export class HarvestedTransition {
 }
 
 export class StrategyReported_v0_3_0_v0_3_1Transition {
-  mockEvent: MockStrategyReported_v0_3_0_v0_3_1Event;
+  mockEvent: StrategyReported_v0_3_0_v0_3_1EventBuilder;
 
   preTransitionStub: VaultStub;
   postTransitionStub: VaultStub;
@@ -109,7 +109,7 @@ export class StrategyReported_v0_3_0_v0_3_1Transition {
     this.postTransitionStub = postTransitionStub;
 
     // create event
-    this.mockEvent = new MockStrategyReported_v0_3_0_v0_3_1Event(
+    this.mockEvent = new StrategyReported_v0_3_0_v0_3_1EventBuilder(
       this.preTransitionStub.address,
       this.strategyStub.address,
       gain,

@@ -1,6 +1,6 @@
 import { Address } from '@graphprotocol/graph-ts';
-import { MockBlock } from '../triggerMocks/mockBlock';
-import { GenericAttributeUpdateEvent } from '../triggerMocks/genericUpdateTrigger';
+import { MockBlock } from '../mappingParamBuilders/mockBlock';
+import { GenericAttributeUpdateEvent } from '../mappingParamBuilders/genericUpdateParam';
 import {
   SetDoHealthCheck,
   SetHealthCheck,

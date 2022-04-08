@@ -1,7 +1,7 @@
-import { MockBlock } from '../triggerMocks/mockBlock';
+import { MockBlock } from '../mappingParamBuilders/mockBlock';
 import { VaultStub } from '../stubs/vaultStateStub';
 import { StrategyStub } from '../stubs/strategyStateStub';
-import { MockStrategyAddedEvent } from '../triggerMocks/mockStrategy';
+import { StrategyAddedEventBuilder } from '../mappingParamBuilders/strategyParamBuilder';
 import { handleStrategyAddedV1 } from '../../src/mappings/vaultMappings';
 
 /**
@@ -61,7 +61,7 @@ export class CreateStrategyTransition {
 
   stub: StrategyStub;
 
-  mockEvent: MockStrategyAddedEvent;
+  mockEvent: StrategyAddedEventBuilder;
 
   constructor(
     vaultStub: VaultStub,
@@ -88,7 +88,7 @@ export class CreateStrategyTransition {
       performanceFeeToUse = performanceFee;
     }
 
-    this.mockEvent = new MockStrategyAddedEvent(
+    this.mockEvent = new StrategyAddedEventBuilder(
       vaultStub.shareToken.address,
       this.stub.address,
       debtLimitToUse,

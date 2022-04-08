@@ -2,9 +2,9 @@ import { MockTransaction } from './mockTransaction';
 import { MockBlock } from './mockBlock';
 import { BigInt, ethereum, Address } from '@graphprotocol/graph-ts';
 import { Transfer } from '../../generated/Registry/Vault';
-import { MockTriggerBase } from './mockTriggerBase';
+import { ParamFactoryBase } from './paramFactoryBase';
 
-export class MockTransferEvent extends MockTriggerBase {
+export class TransferEventBuilder extends ParamFactoryBase {
   tokenAddress: string;
   senderAddress: string;
   recipientAddress: string;

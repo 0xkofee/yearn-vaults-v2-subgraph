@@ -1,7 +1,7 @@
 import { assert } from 'matchstick-as';
-import { MockBlock } from '../triggerMocks/mockBlock';
-import { MockNewReleaseEvent } from '../triggerMocks/mockRegistry';
-import { MockTransaction } from '../triggerMocks/mockTransaction';
+import { MockBlock } from '../mappingParamBuilders/mockBlock';
+import { NewReleaseEventBuilder } from '../mappingParamBuilders/registryParamBuilder';
+import { MockTransaction } from '../mappingParamBuilders/mockTransaction';
 import { VaultStub } from '../stubs/vaultStateStub';
 import { validateTransactionState } from './transaction';
 
@@ -59,7 +59,7 @@ export function validateVaultStub(vaultStub: VaultStub): void {
 }
 
 export function validateRegistryCreatedVault(
-  releaseParams: MockNewReleaseEvent
+  releaseParams: NewReleaseEventBuilder
 ): void {
   assert.fieldEquals(
     'Vault',

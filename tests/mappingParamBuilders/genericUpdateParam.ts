@@ -2,16 +2,16 @@ import { Address, ethereum, BigInt } from '@graphprotocol/graph-ts';
 import { fatalTestError } from '../util';
 import { MockBlock } from './mockBlock';
 import { MockTransaction } from './mockTransaction';
-import { MockTriggerBase } from './mockTriggerBase';
+import { ParamFactoryBase } from './paramFactoryBase';
 
 /**
  * This class is used to dynamically create trigger mocks. It can only create triggers for events that have a single param representing an updated value, of which we have quite a few.
- * Eventually, we should add a way to codegen all of the triggerMocks so this can be removed.
+ * Eventually, we should add a way to codegen all of the mappingParamBuilders so this can be removed.
  */
 export class GenericAttributeUpdateEvent<
   EventTrigger,
   EventParam
-> extends MockTriggerBase {
+> extends ParamFactoryBase {
   subjectAddress: string;
   newValue: string;
 
@@ -53,7 +53,7 @@ export class GenericAttributeUpdateEvent<
         new ethereum.EventParam('param', ethereum.Value.fromBoolean(boolValue))
       );
     } else {
-      fatalTestError('Unable to decode type {} in genericUpdateTrigger', [
+      fatalTestError('Unable to decode type {} in genericUpdateParam', [
         nameof<EventParam>(),
       ]);
     }
