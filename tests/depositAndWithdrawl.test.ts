@@ -213,6 +213,11 @@ test('Deposit call handlers shouldnt fire if Vault apiVersion > 0.4.3', () => {
       null, // activation
       apiVersion, // apiVersion
       null, // rewardsAddress
+      null, // guardianAddress
+      null, // managementAddress
+      null, // governanceAddress
+      null, // depositLimit
+      null, // availableDepositLimit
       new TokenStub( //shareToken
         VaultStub.DefaultAddress, // token address
         null, // token name
@@ -278,6 +283,11 @@ test('Withdraw call handlers shouldnt fire if Vault apiVersion > 0.4.3', () => {
       null, // activation
       apiVersion, // apiVersion
       null, // rewardsAddress
+      null, // guardianAddress
+      null, // managementAddress
+      null, // governanceAddress
+      null, // depositLimit
+      null, // availableDepositLimit
       new TokenStub( //shareToken
         VaultStub.DefaultAddress, // token address
         null, // token name

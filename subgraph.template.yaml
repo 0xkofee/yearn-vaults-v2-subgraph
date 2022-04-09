@@ -111,6 +111,14 @@ dataSources:
           # V2: StrategyAdded(strategy,debtRatio,minDebtPerHarvest,maxDebtPerHarvest,performanceFee)
         - event: StrategyAdded(indexed address,uint256,uint256,uint256,uint256)
           handler: handleStrategyAddedV2
+        - event: UpdateGuardian(address)
+          handler: handleUpdateGuardian
+        - event: UpdateManagement(address)
+          handler: handleUpdateManagement
+        - event: UpdateGovernance(address)
+          handler: handleUpdateGovernance
+        - event: UpdateDepositLimit(uint256)
+          handler: handleUpdateDepositLimit
       file: {{{mappingFile}}}
   {{/vaultsWithPreregisteredStrategies}}
 
@@ -185,6 +193,14 @@ dataSources:
           # V2: StrategyAdded(strategy,debtRatio,minDebtPerHarvest,maxDebtPerHarvest,performanceFee)
         - event: StrategyAdded(indexed address,uint256,uint256,uint256,uint256)
           handler: handleStrategyAddedV2
+        - event: UpdateGuardian(address)
+          handler: handleUpdateGuardian
+        - event: UpdateManagement(address)
+          handler: handleUpdateManagement
+        - event: UpdateGovernance(address)
+          handler: handleUpdateGovernance
+        - event: UpdateDepositLimit(uint256)
+          handler: handleUpdateDepositLimit
       {{#callHandlersEnabled}}
       callHandlers:
         - function: deposit()
@@ -273,6 +289,14 @@ templates:
           handler: handleStrategyAddedV2
         - event: UpdateHealthCheck(indexed address)
           handler: handleUpdateHealthCheck
+        - event: UpdateGuardian(address)
+          handler: handleUpdateGuardian
+        - event: UpdateManagement(address)
+          handler: handleUpdateManagement
+        - event: UpdateGovernance(address)
+          handler: handleUpdateGovernance
+        - event: UpdateDepositLimit(uint256)
+          handler: handleUpdateDepositLimit
       {{#callHandlersEnabled}}
       callHandlers:
         - function: deposit()
@@ -323,6 +347,14 @@ templates:
           handler: handleSetHealthCheckEvent
         - event: SetDoHealthCheck(bool)
           handler: handleSetDoHealthCheckEvent
+        - event: EmergencyExitEnabled()
+          handler: handleEmergencyExitEnabled
+        - event: UpdatedKeeper(address)
+          handler: handleUpdatedKeeper
+        - event: UpdatedStrategist(address)
+          handler: handleUpdatedStrategist
+        - event: UpdatedRewards(address)
+          handler: handleUpdatedRewards
       {{#callHandlersEnabled}}
       callHandlers:
         - function: setHealthCheck(address)

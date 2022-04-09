@@ -20,6 +20,9 @@ export class CreateStrategyTransition {
       vaultStub.wantToken,
       null,
       false,
+      false,
+      null,
+      null,
       null
     );
 
@@ -43,6 +46,9 @@ export class CreateStrategyTransition {
       null,
       true,
       vaultStub.wantToken,
+      null,
+      null,
+      false,
       null,
       null,
       null

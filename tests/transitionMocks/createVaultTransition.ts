@@ -20,6 +20,11 @@ export class CreateVaultTransition {
         null, // activation
         null, // apiVersion
         null, // rewardsAddress
+        null, // guardianAddress
+        null, // managementAddress
+        null, // governanceAddress
+        null, // depositLimit
+        null, // availableDepositLimit
         new TokenStub( //shareToken
           VaultStub.DefaultAddress, // token address
           'DAI yVault', // token name
@@ -63,6 +68,11 @@ export class CreateVaultTransition {
       null, // activation
       null, // apiVersion
       null, // rewardsAddress
+      null, // guardianAddress
+      null, // managementAddress
+      null, // governanceAddress
+      null, // depositLimit
+      null, // availableDepositLimit
       new TokenStub( //shareToken
         VaultStub.DefaultAddress, // token address
         'DAI yVault', // token name
@@ -105,6 +115,12 @@ export class CreateVaultTransition {
       null, // activation
       null, // apiVersion
       null, // rewardsAddress
+      null, // guardianAddress
+      null, // managementAddress
+      null, // governanceAddress
+      null, // depositLimit
+      null, // availableDepositLimit
+
       new TokenStub( //shareToken
         VaultStub.DefaultAddress, // token address
         'DAI yVault', // token name
@@ -165,6 +181,11 @@ export class CreateVaultTransition {
         null, // activation
         null, // apiVersion
         null, // rewardsAddress
+        null, // guardianAddress
+        null, // managementAddress
+        null, // governanceAddress
+        null, // depositLimit
+        null, // availableDepositLimit
         shareToken, // shareToken
         wantToken // wantToken
       );

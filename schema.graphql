@@ -151,8 +151,6 @@ type Vault @entity {
   balanceTokensIdle: BigInt! # Tokens in the Vault contract
   "Balance of Tokens invested into Strategies"
   balanceTokensInvested: BigInt!
-  "Deposit limit for Tokens in the Vault"
-  tokensDepositLimit: BigInt!
   "Current supply of Shares"
   sharesSupply: BigInt!
   "Management fee in basis points"
@@ -171,6 +169,16 @@ type Vault @entity {
   apiVersion: String!
   "The vault's health check contract."
   healthCheck: HealthCheck
+  "The address authorized for guardian interactions in the new Vault"
+  guardian: Bytes!
+  "The management address of the Vault to assert privileged functions that can only be called by management"
+  management: Bytes!
+  "The governance address of the Vault to assert privileged functions that can only be called by governance"
+  governance: Bytes!
+  "The maximum amount of underlying that can be deposited"
+  availableDepositLimit: BigInt!
+  "The maximum amount of tokens that can be deposited in this Vault"
+  depositLimit: BigInt!
 }
 
 type VaultUpdate @entity {
@@ -199,7 +207,6 @@ type VaultUpdate @entity {
   "The current balance position defined as: (vault.totalAssets() * (vault.pricePerShare() / 10**vault.decimals()))."
   balancePosition: BigInt!
 
-
   ### PERFORMANCE
 
   "Returns generated in Tokens"
@@ -224,6 +231,20 @@ type VaultUpdate @entity {
   newRewards: Bytes
   "The vault's new health check contract. If this value has not been changed since the last VaultEvent, it will be null."
   newHealthCheck: HealthCheck
+  "The maximum amount of underlying that can be deposited"
+  availableDepositLimit: BigInt!
+  "The maximum amount of tokens that can be deposited in this Vault"
+  depositLimit: BigInt!
+
+  ### MANAGEMENT
+
+  "The address authorized for guardian interactions in the new Vault"
+  guardian: Bytes!
+  "The management address of the Vault to assert privileged functions that can only be called by management"
+  management: Bytes!
+  "The governance address of the Vault to assert privileged functions that can only be called by governance"
+  governance: Bytes!
+  
 }
 
 type HealthCheck @entity {
@@ -437,6 +458,20 @@ type Strategy @entity {
   reports: [StrategyReport!]! @derivedFrom(field: "strategy")
   "harvest() calls"
   harvests: [Harvest!]! @derivedFrom(field: "strategy")
+  "Used to track the deployed version of this contract"
+  apiVersion: String!
+  "Determines if strategy is in emergency exit"
+  emergencyExit: Boolean!
+  "Provide an accurate estimate for the total amount of assets (principle + return) that this Strategy is currently managing, denominated in terms of want tokens."
+  estimatedTotalAssets: BigInt!
+  "Provide an indication of whether this strategy is currently active"
+  isActive: Boolean!
+  "keeper is the only address that may call tend() or harvest(), other than governance() or strategist"
+  keeper: Bytes!
+  "The address of the strategist"
+  strategist: Bytes!
+  "The address for rewards"
+  rewards: Bytes!
 }
 
 type StrategyMigration @entity {

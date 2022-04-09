@@ -3,12 +3,18 @@ import { CreateVaultTransition } from './transitionMocks/createVaultTransition';
 import { defaults } from './default';
 import {
   handleStrategyAddedV1,
+  handleUpdateGuardian,
+  handleUpdateManagement,
   handleUpdateManagementFee,
   handleUpdatePerformanceFee,
   handleUpdateRewards,
 } from '../src/mappings/vaultMappings';
 import {
+  MockUpdateDepositLimitTransition,
+  MockUpdateGovernanceTransition,
+  MockUpdateGuardianTransition,
   MockUpdateManagementFeeTransition,
+  MockUpdateManagementTransition,
   MockUpdatePerformanceFeeTransition,
   MockUpdateRewardsTransition,
 } from './transitionMocks/vaultAttributeTransitions';
@@ -142,4 +148,79 @@ test('Test handleStrategyAddedV1', () => {
 
   // intended to be null op for coverage detection
   handleStrategyAddedV1(strategy.mockEvent.mock);
+});
+
+test('Test UpdateGuardian Event', () => {
+  clearStore();
+
+  let vault = CreateVaultTransition.DefaultVault();
+  let vaultAddr = vault.stub.shareToken.address;
+
+  let oldGuardian = vault.stub.guardianAddress;
+  assert.fieldEquals('Vault', vaultAddr, 'guardian', oldGuardian);
+
+  let newGuardian = defaults.senderAddress;
+  let guardianUpdate = new MockUpdateGuardianTransition(
+    vault.stub,
+    newGuardian
+  );
+  assert.fieldEquals('Vault', vaultAddr!, 'guardian', newGuardian);
+});
+
+test('Test UpdateManagement Event', () => {
+  clearStore();
+
+  let vault = CreateVaultTransition.DefaultVault();
+  let vaultAddr = vault.stub.shareToken.address;
+
+  let oldManagement = vault.stub.managementAddress;
+  assert.fieldEquals('Vault', vaultAddr, 'management', oldManagement);
+
+  let newGuardian = defaults.senderAddress;
+  let managementUpdate = new MockUpdateManagementTransition(
+    vault.stub,
+    newGuardian
+  );
+  assert.fieldEquals('Vault', vaultAddr!, 'management', newGuardian);
+});
+
+test('Test UpdateGovernance Event', () => {
+  clearStore();
+
+  let vault = CreateVaultTransition.DefaultVault();
+  let vaultAddr = vault.stub.shareToken.address;
+
+  let oldGovernance = vault.stub.governanceAddress;
+  assert.fieldEquals('Vault', vaultAddr, 'governance', oldGovernance);
+
+  let newGovernance = defaults.senderAddress;
+  let governanceUpdate = new MockUpdateGovernanceTransition(
+    vault.stub,
+    newGovernance
+  );
+  assert.fieldEquals('Vault', vaultAddr!, 'governance', newGovernance);
+});
+
+test('Test UpdateDepositLimit Event', () => {
+  clearStore();
+
+  let vault = CreateVaultTransition.DefaultVault();
+  let vaultAddr = vault.stub.shareToken.address;
+
+  let oldDepositLimit = vault.stub.depositLimit;
+  assert.fieldEquals('Vault', vaultAddr, 'depositLimit', oldDepositLimit);
+
+  let newDepositLimit = '1000';
+  let newAvailableDepositLimit = '1000';
+  let depositLimitUpdate = new MockUpdateDepositLimitTransition(
+    vault.stub,
+    newDepositLimit
+  );
+  assert.fieldEquals('Vault', vaultAddr!, 'depositLimit', newDepositLimit);
+  assert.fieldEquals(
+    'Vault',
+    vaultAddr!,
+    'availableDepositLimit',
+    newAvailableDepositLimit
+  );
 });

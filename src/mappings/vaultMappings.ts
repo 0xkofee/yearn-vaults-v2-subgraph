@@ -1,4 +1,4 @@
-import { log } from '@graphprotocol/graph-ts';
+import { BigInt, log } from '@graphprotocol/graph-ts';
 import {
   StrategyReported as StrategyReported_v0_3_0_v0_3_1_Event,
   StrategyMigrated as StrategyMigratedEvent,
@@ -24,8 +24,12 @@ import {
   StrategyRemovedFromQueue as StrategyRemovedFromQueueEvent,
   UpdateRewards as UpdateRewardsEvent,
   UpdateHealthCheck as UpdateHealthCheckEvent,
+  UpdateGuardian,
+  UpdateManagement,
+  UpdateGovernance,
+  UpdateDepositLimit,
 } from '../../generated/Registry/Vault';
-import { Strategy, StrategyMigration } from '../../generated/schema';
+import { Strategy, StrategyMigration, Vault } from '../../generated/schema';
 import { printCallInfo } from '../utils/commons';
 import { BIGINT_ZERO, BIGINT_MAX, ZERO_ADDRESS } from '../utils/constants';
 import * as strategyLibrary from '../utils/strategy/strategy';
@@ -565,6 +569,55 @@ export function handleTransfer(event: TransferEvent): void {
       ]
     );
   }
+}
+
+export function handleUpdateGuardian(event: UpdateGuardian): void {
+  let ethTransaction = getOrCreateTransactionFromEvent(event, 'UpdateGuardian');
+
+  vaultLibrary.handleUpdateGuardian(
+    event.address,
+    event.params.guardian,
+    ethTransaction
+  );
+}
+
+export function handleUpdateManagement(event: UpdateManagement): void {
+  let ethTransaction = getOrCreateTransactionFromEvent(
+    event,
+    'UpdateManagement'
+  );
+
+  vaultLibrary.handleUpdateManagement(
+    event.address,
+    event.params.management,
+    ethTransaction
+  );
+}
+
+export function handleUpdateGovernance(event: UpdateGovernance): void {
+  let ethTransaction = getOrCreateTransactionFromEvent(
+    event,
+    'UpdateGovernance'
+  );
+
+  vaultLibrary.handleUpdateGovernance(
+    event.address,
+    event.params.governance,
+    ethTransaction
+  );
+}
+
+export function handleUpdateDepositLimit(event: UpdateDepositLimit): void {
+  let ethTransaction = getOrCreateTransactionFromEvent(
+    event,
+    'UpdateDepositLimit'
+  );
+
+  vaultLibrary.handleUpdateDepositLimit(
+    event.address,
+    event.params.depositLimit,
+    ethTransaction
+  );
 }
 
 export function handleUpdatePerformanceFee(

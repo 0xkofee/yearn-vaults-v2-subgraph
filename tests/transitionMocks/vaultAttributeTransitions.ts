@@ -1,5 +1,9 @@
 import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts';
 import {
+  handleUpdateDepositLimit,
+  handleUpdateGovernance,
+  handleUpdateGuardian,
+  handleUpdateManagement,
   handleUpdateManagementFee,
   handleUpdatePerformanceFee,
   handleUpdateRewards,
@@ -7,6 +11,10 @@ import {
 import { MockBlock } from '../mappingParamBuilders/mockBlock';
 import { VaultStub } from '../stubs/vaultStateStub';
 import {
+  UpdateDepositLimit,
+  UpdateGovernance,
+  UpdateGuardian,
+  UpdateManagement,
   UpdateManagementFee,
   UpdatePerformanceFee,
   UpdateRewards,
@@ -79,6 +87,104 @@ export class MockUpdateRewardsTransition {
     );
 
     handleUpdateRewards(this.mockEvent.mock);
+
+    MockBlock.IncrementBlock();
+  }
+}
+
+export class MockUpdateGuardianTransition {
+  mockEvent: GenericAttributeUpdateEvent<UpdateGuardian, Address>;
+  preTransitionStub: VaultStub;
+  postTransitionStub: VaultStub;
+
+  constructor(preTransitionStub: VaultStub, newAddress: string) {
+    this.preTransitionStub = preTransitionStub;
+
+    let postTransitionStub = preTransitionStub.clone();
+    postTransitionStub.guardianAddress = newAddress;
+    this.postTransitionStub = postTransitionStub;
+
+    this.mockEvent = new GenericAttributeUpdateEvent<UpdateGuardian, Address>(
+      preTransitionStub.shareToken.address,
+      newAddress,
+      null,
+      null
+    );
+
+    handleUpdateGuardian(this.mockEvent.mock);
+
+    MockBlock.IncrementBlock();
+  }
+}
+
+export class MockUpdateManagementTransition {
+  mockEvent: GenericAttributeUpdateEvent<UpdateManagement, Address>;
+  preTransitionStub: VaultStub;
+  postTransitionStub: VaultStub;
+
+  constructor(preTransitionStub: VaultStub, newAddress: string) {
+    this.preTransitionStub = preTransitionStub;
+
+    let postTransitionStub = preTransitionStub.clone();
+    postTransitionStub.managementAddress = newAddress;
+    this.postTransitionStub = postTransitionStub;
+
+    this.mockEvent = new GenericAttributeUpdateEvent<UpdateManagement, Address>(
+      preTransitionStub.shareToken.address,
+      newAddress,
+      null,
+      null
+    );
+
+    handleUpdateManagement(this.mockEvent.mock);
+
+    MockBlock.IncrementBlock();
+  }
+}
+
+export class MockUpdateGovernanceTransition {
+  mockEvent: GenericAttributeUpdateEvent<UpdateGovernance, Address>;
+  preTransitionStub: VaultStub;
+  postTransitionStub: VaultStub;
+
+  constructor(preTransitionStub: VaultStub, newAddress: string) {
+    this.preTransitionStub = preTransitionStub;
+
+    let postTransitionStub = preTransitionStub.clone();
+    postTransitionStub.managementAddress = newAddress;
+    this.postTransitionStub = postTransitionStub;
+
+    this.mockEvent = new GenericAttributeUpdateEvent<UpdateGovernance, Address>(
+      preTransitionStub.shareToken.address,
+      newAddress,
+      null,
+      null
+    );
+
+    handleUpdateGovernance(this.mockEvent.mock);
+
+    MockBlock.IncrementBlock();
+  }
+}
+
+export class MockUpdateDepositLimitTransition {
+  mockEvent: GenericAttributeUpdateEvent<UpdateDepositLimit, BigInt>;
+  preTransitionStub: VaultStub;
+  postTransitionStub: VaultStub;
+
+  constructor(preTransitionStub: VaultStub, depositLimit: string) {
+    this.preTransitionStub = preTransitionStub;
+
+    let postTransitionStub = preTransitionStub.clone();
+    postTransitionStub.depositLimit = depositLimit;
+    this.postTransitionStub = postTransitionStub;
+
+    this.mockEvent = new GenericAttributeUpdateEvent<
+      UpdateDepositLimit,
+      BigInt
+    >(preTransitionStub.shareToken.address, depositLimit, null, null);
+
+    handleUpdateDepositLimit(this.mockEvent.mock);
 
     MockBlock.IncrementBlock();
   }

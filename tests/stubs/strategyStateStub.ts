@@ -19,7 +19,10 @@ export class StrategyStub extends GenericStateStub {
       vaultStub.wantToken, // wantToken
       null, // health check
       false, // doHealthCheck
-      null // strategist
+      false, // emergencyExit
+      null, // strategist
+      null, // keeper
+      null // rewards
     );
   }
 
@@ -67,6 +70,15 @@ export class StrategyStub extends GenericStateStub {
     this._doHealthCheck = value;
   }
 
+  private _emergencyExit: boolean;
+  public get emergencyExit(): boolean {
+    return this._emergencyExit;
+  }
+  public set emergencyExit(value: boolean) {
+    this._updateStubField<boolean>('emergencyExit', value.toString());
+    this._emergencyExit = value;
+  }
+
   private _strategist: string;
   public get strategist(): string {
     return this._strategist;
@@ -94,6 +106,24 @@ export class StrategyStub extends GenericStateStub {
     this._vaultAddress = value;
   }
 
+  private _keeper: string;
+  public get keeper(): string {
+    return this._keeper;
+  }
+  public set keeper(value: string) {
+    this._updateStubField<Address>('keeper', value);
+    this._keeper = value;
+  }
+
+  private _rewards: string;
+  public get rewards(): string {
+    return this._rewards;
+  }
+  public set rewards(value: string) {
+    this._updateStubField<Address>('rewards', value);
+    this._rewards = value;
+  }
+
   //keeper: string;
   //delegatedAssets: string;
   //estimatedTotalAssets: string;
@@ -110,7 +140,10 @@ export class StrategyStub extends GenericStateStub {
       this.wantToken,
       this.healthCheck,
       this.doHealthCheck,
-      this.strategist
+      this.emergencyExit,
+      this.strategist,
+      this.keeper,
+      this.rewards
     );
   }
 
@@ -123,7 +156,10 @@ export class StrategyStub extends GenericStateStub {
     wantToken: TokenStub | null,
     healthCheck: string | null,
     doHealthCheck: boolean,
-    strategist: string | null
+    emergencyExit: boolean,
+    strategist: string | null,
+    keeper: string | null,
+    rewards: string | null
   ) {
     let _addressToUse = StrategyStub.DefaultAddress;
     if (address) {
@@ -160,6 +196,18 @@ export class StrategyStub extends GenericStateStub {
       this._strategist = defaults.strategistAddress;
     }
 
+    if (keeper) {
+      this._keeper = keeper;
+    } else {
+      this._keeper = defaults.keeperAddress;
+    }
+
+    if (rewards) {
+      this._rewards = rewards;
+    } else {
+      this._rewards = defaults.rewardsAddress;
+    }
+
     // figure out totalAssets by querying the wantToken balance
     if (this.wantToken.hasAccountBalance(this.address)) {
       this._totalAssets = this.wantToken.getAccountBalance(this.address);
@@ -175,7 +223,10 @@ export class StrategyStub extends GenericStateStub {
     this.healthCheck = this._healthCheck;
     this.doHealthCheck = this._doHealthCheck;
     this.strategist = this._strategist;
+    this.emergencyExit = this._emergencyExit;
     this.totalAssets = this._totalAssets;
+    this.keeper = this._keeper;
+    this.rewards = this._rewards;
 
     // these don't have setters so we directly update them
     this._updateStubField<Address>('token', this.wantToken.address);

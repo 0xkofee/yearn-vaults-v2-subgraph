@@ -51,4 +51,6 @@ export namespace defaults {
 
   export const strategyAddress = '0x3280499298ace3fd3cd9c2558e9e8746ace3e52d';
   export const strategistAddress = '0xea674fdde714fd979de3edf0f56aa9716b898ec8';
+  export const keeperAddress = '0x736d7e3c5a6cb2ce3b764300140abf476f6cfccf';
+  export const rewardsAddress = '0xc491599b9a20c3a2f0a85697ee6d9434efa9f503';
 }

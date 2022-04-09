@@ -87,8 +87,13 @@ export class GenericDepositTransition {
       preDepositStub.activation, // activation
       preDepositStub.apiVersion, // apiVersion
       preDepositStub.rewardsAddress, // rewardsAddress
-      newShareTokenStub.postTransitionStub,
-      newWantTokenStub.postTransitionStub
+      preDepositStub.guardianAddress, // guardianAddress
+      preDepositStub.managementAddress, // managementAddress
+      preDepositStub.governanceAddress, // governanceAddress
+      preDepositStub.depositLimit, // depositLimit
+      preDepositStub.availableDepositLimit, // availableDepositLimit
+      newShareTokenStub.postTransitionStub, // postTransitionStub
+      newWantTokenStub.postTransitionStub // postTransitionStub
     );
 
     // now trigger the transfer handlers that we skipped earlier

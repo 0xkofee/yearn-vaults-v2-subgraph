@@ -1,4 +1,4 @@
-import { assert, clearStore, test } from 'matchstick-as/assembly/index';
+import { assert, clearStore, log, test } from 'matchstick-as/assembly/index';
 import { CreateVaultTransition } from './transitionMocks/createVaultTransition';
 import { defaults } from './default';
 import { handleStrategyReported_v0_3_0_v0_3_1 } from '../src/mappings/vaultMappings';
@@ -9,8 +9,12 @@ import {
 } from './transitionMocks/strategyTransitions';
 import { buildIdFromEvent } from '../src/utils/commons';
 import {
+  EmergencyExitTransition,
   SetDoHealthCheckTransition,
   SetHealthCheckTransition,
+  UpdatedKeeperTransition,
+  UpdatedRewardsTransition,
+  UpdatedStrategistTransition,
 } from './transitionMocks/strategyAttributeTransitions';
 import {
   handleSetDoHealthCheckEvent,
@@ -274,4 +278,84 @@ test('Test Strategy setDoHealthCheck Event', () => {
 
   // no-op to mark test for coverage
   handleSetDoHealthCheckEvent(setDoHealthCheckTransition.mockEvent.mock);
+});
+
+test('Test EmergencyExitEnabled Event', () => {
+  clearStore();
+
+  let vault = CreateVaultTransition.DefaultVault();
+  let strategy = CreateStrategyTransition.DefaultStrategy(vault.stub);
+  let strategyAddress = strategy.stub.address;
+
+  let oldEmergencyExit = strategy.stub.emergencyExit;
+  assert.fieldEquals(
+    'Strategy',
+    strategyAddress,
+    'emergencyExit',
+    oldEmergencyExit.toString()
+  );
+
+  let keeperUpdate = new EmergencyExitTransition(strategy.stub);
+  assert.fieldEquals('Strategy', strategyAddress, 'emergencyExit', 'true');
+});
+
+test('Test UpdatedKeeper Event', () => {
+  clearStore();
+
+  let vault = CreateVaultTransition.DefaultVault();
+  let strategy = CreateStrategyTransition.DefaultStrategy(vault.stub);
+  let strategyAddress = strategy.stub.address;
+
+  let oldKeeperAdress = strategy.stub.keeper;
+  assert.fieldEquals('Strategy', strategyAddress, 'keeper', oldKeeperAdress);
+
+  let newKeeper = defaults.senderAddress;
+  let keeperUpdate = new UpdatedKeeperTransition(strategy.stub, newKeeper);
+  assert.fieldEquals('Strategy', strategyAddress, 'keeper', newKeeper);
+});
+
+test('Test UpdatedStrategist Event', () => {
+  clearStore();
+
+  let vault = CreateVaultTransition.DefaultVault();
+  let strategy = CreateStrategyTransition.DefaultStrategy(vault.stub);
+  let strategyAddress = strategy.stub.address;
+
+  let oldStrategistAdress = strategy.stub.strategist;
+  assert.fieldEquals(
+    'Strategy',
+    strategyAddress,
+    'strategist',
+    oldStrategistAdress
+  );
+
+  let newStrategistAddress = defaults.senderAddress;
+  let strategistUpdate = new UpdatedStrategistTransition(
+    strategy.stub,
+    newStrategistAddress
+  );
+  assert.fieldEquals(
+    'Strategy',
+    strategyAddress,
+    'strategist',
+    newStrategistAddress
+  );
+});
+
+test('Test UpdatedRewards Event', () => {
+  clearStore();
+
+  let vault = CreateVaultTransition.DefaultVault();
+  let strategy = CreateStrategyTransition.DefaultStrategy(vault.stub);
+  let strategyAddress = strategy.stub.address;
+
+  let oldRewardsAdress = strategy.stub.rewards;
+  assert.fieldEquals('Strategy', strategyAddress, 'rewards', oldRewardsAdress);
+
+  let newRewardsAddress = defaults.senderAddress;
+  let rewardsUpdate = new UpdatedRewardsTransition(
+    strategy.stub,
+    newRewardsAddress
+  );
+  assert.fieldEquals('Strategy', strategyAddress, 'rewards', newRewardsAddress);
 });

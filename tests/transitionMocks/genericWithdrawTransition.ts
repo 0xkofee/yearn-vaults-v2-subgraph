@@ -64,6 +64,11 @@ export class GenericWithdrawTransition {
       preWithdrawStub.activation, // activation
       preWithdrawStub.apiVersion, // apiVersion
       preWithdrawStub.rewardsAddress, // rewardsAddress
+      preWithdrawStub.guardianAddress, // guardianAddress
+      preWithdrawStub.managementAddress, // managementAddress
+      preWithdrawStub.governanceAddress, // governanceAddress
+      preWithdrawStub.depositLimit, // depositLimit
+      preWithdrawStub.availableDepositLimit, // availableDepositLimit
       newShareTokenStub.postTransitionStub,
       newWantTokenStub.postTransitionStub
     );

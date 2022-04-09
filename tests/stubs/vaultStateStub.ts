@@ -1,11 +1,12 @@
 import { Address, ethereum, BigInt } from '@graphprotocol/graph-ts';
-import { createMockedFunction, log } from 'matchstick-as';
+import { createMockedFunction } from 'matchstick-as';
 import { Vault } from '../../generated/Registry/Vault';
 import { Token } from '../../generated/schema';
 import { defaults } from '../default';
 import { fatalTestError } from '../util';
 import { GenericStateStub } from './genericStateStub';
 import { TokenStub } from './tokenStateStub';
+import { log } from 'matchstick-as/assembly/log';
 
 export class VaultStub extends GenericStateStub {
   static DefaultAddress: string = defaults.vaultAddress;
@@ -21,6 +22,11 @@ export class VaultStub extends GenericStateStub {
       null, // activation
       null, // apiVersion
       null, // rewards address
+      null, // guardian address
+      null, // management address
+      null, // governance address
+      null, // depositLimit
+      null, // availableDepositLimit
       TokenStub.DefaultToken(VaultStub.DefaultAddress),
       TokenStub.DefaultToken(TokenStub.DefaultTokenAddress)
     );
@@ -107,6 +113,51 @@ export class VaultStub extends GenericStateStub {
     this._rewardsAddress = value;
   }
 
+  private _guardianAddress: string;
+  public get guardianAddress(): string {
+    return this._guardianAddress;
+  }
+  public set guardianAddress(value: string) {
+    this._updateStubField<Address>('guardian', value);
+    this._guardianAddress = value;
+  }
+
+  private _managementAddress: string;
+  public get managementAddress(): string {
+    return this._managementAddress;
+  }
+  public set managementAddress(value: string) {
+    this._updateStubField<Address>('management', value);
+    this._managementAddress = value;
+  }
+
+  private _governanceAddress: string;
+  public get governanceAddress(): string {
+    return this._governanceAddress;
+  }
+  public set governanceAddress(value: string) {
+    this._updateStubField<Address>('governance', value);
+    this._governanceAddress = value;
+  }
+
+  private _depositLimit: string;
+  public get depositLimit(): string {
+    return this._depositLimit;
+  }
+  public set depositLimit(value: string) {
+    this._updateStubField<BigInt>('depositLimit', value);
+    this._depositLimit = value;
+  }
+
+  private _availableDepositLimit: string;
+  public get availableDepositLimit(): string {
+    return this._availableDepositLimit;
+  }
+  public set availableDepositLimit(value: string) {
+    this._updateStubField<BigInt>('availableDepositLimit', value);
+    this._availableDepositLimit = value;
+  }
+
   shareToken: TokenStub;
   wantToken: TokenStub;
 
@@ -121,6 +172,11 @@ export class VaultStub extends GenericStateStub {
       this.activation,
       this.apiVersion,
       this.rewardsAddress,
+      this.guardianAddress,
+      this.managementAddress,
+      this.governanceAddress,
+      this.depositLimit,
+      this.availableDepositLimit,
       this.shareToken,
       this.wantToken
     );
@@ -136,6 +192,11 @@ export class VaultStub extends GenericStateStub {
     activation: string | null,
     apiVersion: string | null,
     rewardsAddress: string | null,
+    guardianAddress: string | null,
+    managementAddress: string | null,
+    governanceAddress: string | null,
+    depositLimit: string | null,
+    availableDepositLimit: string | null,
     shareToken: TokenStub,
     wantToken: TokenStub
   ) {
@@ -188,6 +249,32 @@ export class VaultStub extends GenericStateStub {
     } else {
       this._rewardsAddress = defaults.treasuryAddress;
     }
+    if (guardianAddress) {
+      this._guardianAddress = guardianAddress;
+    } else {
+      this._guardianAddress = defaults.anotherAddress;
+    }
+    if (managementAddress) {
+      this._managementAddress = managementAddress;
+    } else {
+      // log.info(managementAddress, []);
+      this._managementAddress = defaults.anotherAddress;
+    }
+    if (governanceAddress) {
+      this._governanceAddress = governanceAddress;
+    } else {
+      this._governanceAddress = defaults.anotherAddress;
+    }
+    if (depositLimit) {
+      this._depositLimit = depositLimit;
+    } else {
+      this._depositLimit = '1000';
+    }
+    if (availableDepositLimit) {
+      this._availableDepositLimit = availableDepositLimit;
+    } else {
+      this._availableDepositLimit = '100';
+    }
 
     // update stubs by triggering each field's setter
     this.totalAssets = this._totalAssets;
@@ -198,9 +285,14 @@ export class VaultStub extends GenericStateStub {
     this.managementFee = this._managementFee;
     this.activation = this._activation;
     this.apiVersion = this._apiVersion;
+    this.depositLimit = this._depositLimit;
+    this.availableDepositLimit = this._availableDepositLimit;
 
     // these don't have setters so we directly update them
     this._updateStubField<Address>('token', this.wantToken.address);
     this._updateStubField<Address>('rewards', this.rewardsAddress);
+    this._updateStubField<Address>('guardian', this.guardianAddress);
+    this._updateStubField<Address>('management', this.managementAddress);
+    this._updateStubField<Address>('governance', this.governanceAddress);
   }
 }

@@ -24,6 +24,11 @@ test('Test handleNewRelease', () => {
     null, // activation
     null, // apiVersion
     null, // rewardsAddress
+    null, // guardianAddress
+    null, // managementAddress
+    null, // governanceAddress
+    null, // depositLimit
+    null, // availableDepositLimit
     TokenStub.DefaultToken(VaultStub.DefaultAddress), // shareToken
     TokenStub.DefaultToken(TokenStub.DefaultTokenAddress) // wantToken
   );

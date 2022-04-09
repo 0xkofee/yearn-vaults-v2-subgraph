@@ -54,7 +54,6 @@ export function getOrCreate(
     toAccount,
     amount
   );
-
   let transfer = Transfer.load(id);
   if (transfer === null) {
     transfer = new Transfer(id);
