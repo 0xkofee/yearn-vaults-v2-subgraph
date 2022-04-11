@@ -36,6 +36,24 @@ export class Transfer__Params {
   }
 }
 
+export class UpdateHealthCheck extends ethereum.Event {
+  get params(): UpdateHealthCheck__Params {
+    return new UpdateHealthCheck__Params(this);
+  }
+}
+
+export class UpdateHealthCheck__Params {
+  _event: UpdateHealthCheck;
+
+  constructor(event: UpdateHealthCheck) {
+    this._event = event;
+  }
+
+  get healthCheck(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+}
+
 export class Approval extends ethereum.Event {
   get params(): Approval__Params {
     return new Approval__Params(this);
