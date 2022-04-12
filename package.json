@@ -25,7 +25,7 @@
     "prepare:mainnet": "mustache config/mainnet.json subgraph.template.yaml > subgraph.yaml",
     "prepare:fantom": "mustache config/fantom.json subgraph.template.yaml > subgraph.yaml",
     "prepare:arbitrum": "mustache config/arbitrum.json subgraph.template.yaml > subgraph.yaml",
-		"deploy:mainnet": "yarn build:mainnet && yarn thegraph:deploy:mainnet",
+    "deploy:mainnet": "yarn build:mainnet && yarn thegraph:deploy:mainnet",
     "deploy:fantom": "yarn build:fantom && yarn thegraph:deploy:fantom",
     "deploy:arbitrum": "yarn build:arbitrum && yarn thegraph:deploy:arbitrum",
     "release": "standard-version",
