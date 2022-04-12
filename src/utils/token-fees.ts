@@ -18,20 +18,10 @@ export function isFeeToStrategy(
   toAccount: Account,
   amount: BigInt
 ): boolean {
-  // this can be optimized once strategist is stored in the Strategy entity
-  let benefactorIsStrategist: boolean = false;
-  for (let i = 0; i < vault.strategies.length; i++) {
-    let contract = StrategyContract.bind(
-      Address.fromString(vault.strategies[i])
-    );
-    let strategist = contract.strategist();
-
-    if (Address.fromString(toAccount.id).equals(strategist)) {
-      benefactorIsStrategist = true;
-      break;
-    }
-  }
-  if (benefactorIsStrategist) {
+  // todo: check vault contract to see if this strategy exists.
+  // otherwise, income sent to another strategy will be counted as income (delegated strategies)
+  let strategy = Strategy.load(toAccount.id);
+  if (strategy !== null) {
     addUnrecognizedStrategyFees(vault, amount);
     return true;
   } else {
