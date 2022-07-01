@@ -23,7 +23,6 @@ import {
   UpdateManagement,
   UpdateGovernance,
   UpdateGuardian,
-  UpdateWithdrawalQueue,
 } from '../../generated/YvWBTCVault/Vault';
 import { Strategy, Transaction, Vault } from '../../generated/schema';
 import { isEventBlockNumberLt, printCallInfo } from '../utils/commons';
@@ -259,17 +258,12 @@ export function handleStrategyMigrated(event: StrategyMigrated): void {
           null,
           ethTransaction
         );
+        vaultLibrary.strategyRemovedFromQueue(
+          oldStrategyAddress,
+          ethTransaction,
+          event
+        );
       }
-      //We can now remove the old strat from the queue
-      log.info('[Strategy Migrated] Removing old strategy', [
-        oldStrategyAddress.toHexString(),
-      ]);
-
-      vaultLibrary.strategyRemovedFromQueue(
-        oldStrategyAddress,
-        ethTransaction,
-        event
-      );
     }
   }
 }
@@ -785,29 +779,6 @@ export function handleStrategyRemovedFromQueue(
     );
     vaultLibrary.strategyRemovedFromQueue(
       event.params.strategy,
-      ethTransaction,
-      event
-    );
-  }
-}
-
-export function handleUpdateWithdrawalQueue(
-  event: UpdateWithdrawalQueue
-): void {
-  if (
-    isEventBlockNumberLt(
-      'yvWBTCVault_UpdateWithdrawalQueue',
-      event.block,
-      YV_WBTC_VAULT_END_BLOCK_CUSTOM
-    )
-  ) {
-    let ethTransaction = getOrCreateTransactionFromEvent(
-      event,
-      'yvWBTCVault_UpdateWithdrawalQueue'
-    );
-
-    vaultLibrary.UpdateWithdrawalQueue(
-      event.params.queue,
       ethTransaction,
       event
     );

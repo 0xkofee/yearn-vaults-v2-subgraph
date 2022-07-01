@@ -42,7 +42,6 @@ import {
   UpdateGovernance,
   UpdateGuardian,
   UpdateManagement,
-  UpdateWithdrawalQueue,
 } from '../../generated/YvLinkVault/Vault';
 
 function createYvLinkVaultIfNeeded(
@@ -233,17 +232,12 @@ export function handleStrategyMigrated(event: StrategyMigrated): void {
           null,
           ethTransaction
         );
+        vaultLibrary.strategyRemovedFromQueue(
+          oldStrategyAddress,
+          ethTransaction,
+          event
+        );
       }
-      //We can now remove the old strat from the queue
-      log.info('[Strategy Migrated] Removing old strategy', [
-        oldStrategyAddress.toHexString(),
-      ]);
-
-      vaultLibrary.strategyRemovedFromQueue(
-        oldStrategyAddress,
-        ethTransaction,
-        event
-      );
     }
   }
 }
@@ -737,29 +731,6 @@ export function handleStrategyAddedToQueue(
 
     vaultLibrary.strategyAddedToQueue(
       event.params.strategy,
-      ethTransaction,
-      event
-    );
-  }
-}
-
-export function handleUpdateWithdrawalQueue(
-  event: UpdateWithdrawalQueue
-): void {
-  if (
-    isEventBlockNumberLt(
-      'yvLinkVault_UpdateWithdrawalQueue',
-      event.block,
-      YV_LINK_VAULT_END_BLOCK_CUSTOM
-    )
-  ) {
-    let ethTransaction = getOrCreateTransactionFromEvent(
-      event,
-      'yvLinkVault_UpdateWithdrawalQueue'
-    );
-
-    vaultLibrary.UpdateWithdrawalQueue(
-      event.params.queue,
       ethTransaction,
       event
     );
