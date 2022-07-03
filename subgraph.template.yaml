@@ -124,6 +124,8 @@ dataSources:
           handler: handleUpdateGovernance
         - event: UpdateDepositLimit(uint256)
           handler: handleUpdateDepositLimit
+        - event: EmergencyShutdown(bool)
+          handler: handleEmergencyShutdown
       file: {{{mappingFile}}}
   {{/vaultsWithPreregisteredStrategies}}
 
