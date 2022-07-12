@@ -93,7 +93,7 @@ export function getOrCreate(
   createTemplate: boolean
 ): Vault {
   log.debug('[Vault] Get or create', []);
-  let id = vaultAddress.toHexString();
+  let id = buildId(vaultAddress);
   let vault = Vault.load(id);
 
   if (vault == null) {
@@ -184,7 +184,7 @@ export function release(
 }
 
 export function tag(vault: Address, tag: string): Vault | null {
-  let id = vault.toHexString();
+  let id = buildId(vault);
   log.info('Processing tag for vault address: {}', [id]);
   let entity = Vault.load(id);
   if (entity == null) {
@@ -237,7 +237,7 @@ export function deposit(
 
   let vaultUpdate: VaultUpdate;
   let balancePosition = getBalancePosition(vaultContract);
-  let totalAssets = getTotalAssets(vaultContract);
+  let totalAssets = getTotalAssets(vaultAddress);
   if (vault.latestUpdate == null) {
     vaultUpdate = vaultUpdateLibrary.firstDeposit(
       vault,
@@ -265,7 +265,7 @@ export function calculateAmountDeposited(
   sharesMinted: BigInt
 ): BigInt {
   let vaultContract = VaultContract.bind(vaultAddress);
-  let totalAssets = vaultContract.totalAssets();
+  let totalAssets = getTotalAssets(vaultAddress);
   let totalSupply = vaultContract.totalSupply();
   let amount = totalSupply.isZero()
     ? BIGINT_ZERO
@@ -395,7 +395,7 @@ export function withdraw(
         sharesBurnt,
         transaction,
         balancePosition,
-        getTotalAssets(vaultContract)
+        getTotalAssets(vaultAddress)
       );
     }
   } else {
@@ -471,7 +471,7 @@ export function strategyReported(
     transaction,
     balancePosition,
     grossReturnsGenerated,
-    getTotalAssets(vaultContract)
+    getTotalAssets(vaultAddress)
   );
 }
 
@@ -493,7 +493,7 @@ export function performanceFeeUpdated(
       ethTransaction,
       getBalancePosition(vaultContract),
       performanceFee,
-      getTotalAssets(vaultContract)
+      getTotalAssets(vaultAddress)
     ) as VaultUpdate;
     vault.latestUpdate = vaultUpdate.id;
 
@@ -525,7 +525,7 @@ export function managementFeeUpdated(
       ethTransaction,
       getBalancePosition(vaultContract),
       managementFee,
-      getTotalAssets(vaultContract)
+      getTotalAssets(vaultAddress)
     ) as VaultUpdate;
     vault.latestUpdate = vaultUpdate.id;
 
@@ -586,7 +586,7 @@ export function handleUpdateRewards(
       vault as Vault,
       ethTransaction,
       getBalancePosition(vaultContract),
-      getTotalAssets(vaultContract),
+      getTotalAssets(vaultAddress),
       rewards
     ) as VaultUpdate;
     vault.latestUpdate = vaultUpdate.id;
@@ -600,20 +600,41 @@ export function handleUpdateRewards(
   }
 }
 
+export function getTotalAssets(vaultAddress: Address): BigInt {
+  let vaultContract = VaultContract.bind(vaultAddress);
+  let tryTotalAssets = vaultContract.try_totalAssets();
+  // TODO Debugging Use totalAssets directly
+  let totalAssets = tryTotalAssets.reverted
+    ? BigInt.fromI32(0)
+    : tryTotalAssets.value;
+  return totalAssets;
+}
+
 function getBalancePosition(vaultContract: VaultContract): BigInt {
-  let totalAssets = vaultContract.totalAssets();
+  let tryTotalAssets = vaultContract.try_totalAssets();
+  // TODO Debugging Use totalAssets directly
+  let totalAssets = tryTotalAssets.reverted
+    ? BigInt.fromI32(0)
+    : tryTotalAssets.value;
+
+  if (tryTotalAssets.reverted) {
+    log.warning(
+      'try_totalAssets (getBalancePosition) FAILED Vault {} - TotalAssets',
+      [vaultContract._address.toHexString(), totalAssets.toString()]
+    );
+  }
   let tryPricePerShare = vaultContract.try_pricePerShare();
   let pricePerShare = tryPricePerShare.reverted
     ? BigInt.fromI32(0)
     : tryPricePerShare.value;
   // TODO Debugging Use pricePerShare directly
   if (tryPricePerShare.reverted) {
-    log.warning('try_pricePerShare FAILED Vault {} - PricePerShare', [
+    log.warning('try_pricePerShare (getBalancePosition) FAILED Vault {} - PricePerShare', [
       vaultContract._address.toHexString(),
       pricePerShare.toString(),
     ]);
   } else {
-    log.warning('try_pricePerShare SUCCESS Vault {} - PricePerShare', [
+    log.warning('try_pricePerShare (getBalancePosition) SUCCESS Vault {} - PricePerShare', [
       vaultContract._address.toHexString(),
       pricePerShare.toString(),
     ]);
@@ -621,10 +642,6 @@ function getBalancePosition(vaultContract: VaultContract): BigInt {
   // @ts-ignore
   let decimals = u8(vaultContract.decimals().toI32());
   return totalAssets.times(pricePerShare).div(BigInt.fromI32(10).pow(decimals));
-}
-
-function getTotalAssets(vaultContract: VaultContract): BigInt {
-  return vaultContract.totalAssets();
 }
 
 export function createCustomVaultIfNeeded(

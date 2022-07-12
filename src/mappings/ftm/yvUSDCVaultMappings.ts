@@ -319,7 +319,7 @@ export function handleDeposit(call: DepositCall): void {
     );
     createFTMYvUSDCVaultIfNeeded(call.to, transaction);
     let vaultContract = VaultContract.bind(call.to);
-    let totalAssets = vaultContract.totalAssets();
+    let totalAssets = vaultLibrary.getTotalAssets(call.to);
     let totalSupply = vaultContract.totalSupply();
     let sharesAmount = call.outputs.value0;
     log.info(
@@ -474,7 +474,7 @@ export function handleWithdraw(call: WithdrawCall): void {
     let vaultContract = VaultContract.bind(call.to);
 
     let withdrawnAmount = call.outputs.value0;
-    let totalAssets = vaultContract.totalAssets();
+    let totalAssets = vaultLibrary.getTotalAssets(call.to);
     let totalSupply = vaultContract.totalSupply();
     let totalSharesBurnt = totalAssets.equals(BIGINT_ZERO)
       ? withdrawnAmount
@@ -679,7 +679,7 @@ export function handleTransfer(event: TransferEvent): void {
       );
       createFTMYvUSDCVaultIfNeeded(event.address, transaction);
       let vaultContract = VaultContract.bind(event.address);
-      let totalAssets = vaultContract.totalAssets();
+      let totalAssets = vaultLibrary.getTotalAssets(event.address);
       let totalSupply = vaultContract.totalSupply();
       let sharesAmount = event.params.value;
       let amount = sharesAmount.times(totalAssets).div(totalSupply);
