@@ -629,15 +629,15 @@ function getBalancePosition(vaultContract: VaultContract): BigInt {
     : tryPricePerShare.value;
   // TODO Debugging Use pricePerShare directly
   if (tryPricePerShare.reverted) {
-    log.warning('try_pricePerShare (getBalancePosition) FAILED Vault {} - PricePerShare', [
-      vaultContract._address.toHexString(),
-      pricePerShare.toString(),
-    ]);
+    log.warning(
+      'try_pricePerShare (getBalancePosition) FAILED Vault {} - PricePerShare',
+      [vaultContract._address.toHexString(), pricePerShare.toString()]
+    );
   } else {
-    log.warning('try_pricePerShare (getBalancePosition) SUCCESS Vault {} - PricePerShare', [
-      vaultContract._address.toHexString(),
-      pricePerShare.toString(),
-    ]);
+    log.warning(
+      'try_pricePerShare (getBalancePosition) SUCCESS Vault {} - PricePerShare',
+      [vaultContract._address.toHexString(), pricePerShare.toString()]
+    );
   }
   // @ts-ignore
   let decimals = u8(vaultContract.decimals().toI32());
