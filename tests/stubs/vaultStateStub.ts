@@ -1,12 +1,8 @@
-import { Address, ethereum, BigInt } from '@graphprotocol/graph-ts';
+import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts';
 import { createMockedFunction } from 'matchstick-as';
-import { Vault } from '../../generated/Registry/Vault';
-import { Token } from '../../generated/schema';
 import { defaults } from '../default';
-import { fatalTestError } from '../util';
 import { GenericStateStub } from './genericStateStub';
 import { TokenStub } from './tokenStateStub';
-import { log } from 'matchstick-as/assembly/log';
 
 export class VaultStub extends GenericStateStub {
   static DefaultAddress: string = defaults.vaultAddress;
@@ -29,7 +25,8 @@ export class VaultStub extends GenericStateStub {
       null, // availableDepositLimit
       TokenStub.DefaultToken(VaultStub.DefaultAddress),
       TokenStub.DefaultToken(TokenStub.DefaultTokenAddress),
-      null // emergencyShutdown
+      null, // emergencyShutdown
+      null //withdrawlQueue
     );
   }
 
@@ -159,6 +156,7 @@ export class VaultStub extends GenericStateStub {
     this._availableDepositLimit = value;
   }
 
+
   private _emergencyShutdown: string;
   public get emergencyShutdown(): string {
     return this._emergencyShutdown;
@@ -166,6 +164,24 @@ export class VaultStub extends GenericStateStub {
   public set emergencyShutdown(value: string) {
     this._updateStubField<boolean>('emergencyShutdown', value);
     this._emergencyShutdown = value;
+  }
+  private _withDrawlQueue: Array<string>;
+  public get withDrawlQueue(): Array<string> {
+    return this._withDrawlQueue;
+  }
+
+  public set withDrawlQueue(value: Array<string>) {
+    createMockedFunction(
+      Address.fromString(this.address),
+      'withdrawalQueue',
+      'withdrawalQueue'.concat('(uint256):(address)')
+    ).returns([
+      //@ts-ignore
+      ethereum.Value.fromAddressArray(
+        value.map<Address>((v: string) => Address.fromString(v))
+      ),
+    ]);
+    this._withDrawlQueue = value;
   }
 
   shareToken: TokenStub;
@@ -189,7 +205,8 @@ export class VaultStub extends GenericStateStub {
       this.availableDepositLimit,
       this.shareToken,
       this.wantToken,
-      this.emergencyShutdown
+      this.emergencyShutdown,
+      this.withDrawlQueue
     );
   }
 
@@ -210,7 +227,8 @@ export class VaultStub extends GenericStateStub {
     availableDepositLimit: string | null,
     shareToken: TokenStub,
     wantToken: TokenStub,
-    emergencyShutdown: string | null
+    emergencyShutdown: string | null,
+    withDrawlQueue: Array<string> | null
   ) {
     super(shareToken.address);
     this.shareToken = shareToken;
@@ -290,27 +308,32 @@ export class VaultStub extends GenericStateStub {
     if (emergencyShutdown) {
       this._emergencyShutdown = emergencyShutdown;
     } else {
-      this._emergencyShutdown = 'false';
+        this._emergencyShutdown = 'false';
+      if (withDrawlQueue) {
+        this._withDrawlQueue = withDrawlQueue;
+      } else {
+        this._withDrawlQueue = new Array();
+      }
+
+      // update stubs by triggering each field's setter
+      this.totalAssets = this._totalAssets;
+      this.totalSupply = this._totalSupply;
+      this.totalDebt = this._totalDebt;
+      this.pricePerShare = this._pricePerShare;
+      this.performanceFee = this._performanceFee;
+      this.managementFee = this._managementFee;
+      this.activation = this._activation;
+      this.apiVersion = this._apiVersion;
+      this.depositLimit = this._depositLimit;
+      this.availableDepositLimit = this._availableDepositLimit;
+      this.emergencyShutdown = this._emergencyShutdown;
+
+      // these don't have setters so we directly update them
+      this._updateStubField<Address>('token', this.wantToken.address);
+      this._updateStubField<Address>('rewards', this.rewardsAddress);
+      this._updateStubField<Address>('guardian', this.guardianAddress);
+      this._updateStubField<Address>('management', this.managementAddress);
+      this._updateStubField<Address>('governance', this.governanceAddress);
     }
-
-    // update stubs by triggering each field's setter
-    this.totalAssets = this._totalAssets;
-    this.totalSupply = this._totalSupply;
-    this.totalDebt = this._totalDebt;
-    this.pricePerShare = this._pricePerShare;
-    this.performanceFee = this._performanceFee;
-    this.managementFee = this._managementFee;
-    this.activation = this._activation;
-    this.apiVersion = this._apiVersion;
-    this.depositLimit = this._depositLimit;
-    this.availableDepositLimit = this._availableDepositLimit;
-    this.emergencyShutdown = this._emergencyShutdown;
-
-    // these don't have setters so we directly update them
-    this._updateStubField<Address>('token', this.wantToken.address);
-    this._updateStubField<Address>('rewards', this.rewardsAddress);
-    this._updateStubField<Address>('guardian', this.guardianAddress);
-    this._updateStubField<Address>('management', this.managementAddress);
-    this._updateStubField<Address>('governance', this.governanceAddress);
   }
 }
