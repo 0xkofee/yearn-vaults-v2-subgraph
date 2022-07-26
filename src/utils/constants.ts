@@ -85,3 +85,12 @@ export const ETH_MAINNET_NETWORK = 'mainnet';
 export const FTM_MAINNET_NETWORK = 'fantom';
 export const ARB_MAINNET_NETWORK = 'arbitrum-one';
 export const OPS_MAINNET_NETWORK = 'optimism';
+
+
+// Values that are modified in the contract but don't emit an event to handle
+export const shareTokenNames = new Map<string, string>();
+shareTokenNames.set('0x0a0b23d9786963de69cb2447dc125c49929419d8', 'MIM yVault');
+
+export const shareTokenSymbol = new Map<string, string>();
+shareTokenNames.set('0x0a0b23d9786963de69cb2447dc125c49929419d8', 'yvMIM');
+

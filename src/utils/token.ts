@@ -1,7 +1,11 @@
 import { Address } from '@graphprotocol/graph-ts';
 import { Token } from '../../generated/schema';
 import { ERC20 } from '../../generated/Registry/ERC20';
-import { DEFAULT_DECIMALS } from '../utils/constants';
+import {
+  DEFAULT_DECIMALS,
+  shareTokenNames,
+  shareTokenSymbol,
+} from '../utils/constants';
 
 export function getOrCreateToken(address: Address): Token {
   let id = address.toHexString();
@@ -15,8 +19,17 @@ export function getOrCreateToken(address: Address): Token {
     let symbol = erc20Contract.try_symbol();
     // TODO: add overrides for name and symbol
     token.decimals = decimals.reverted ? DEFAULT_DECIMALS : decimals.value;
-    token.name = name.reverted ? '' : name.value;
-    token.symbol = symbol.reverted ? '' : symbol.value;
+    token.name = name.reverted
+      ? shareTokenNames.has(id)
+        ? shareTokenNames.get(id)
+        : ''
+      : name.value;
+    token.symbol = symbol.reverted
+      ? shareTokenSymbol.has(id)
+        ? shareTokenSymbol.get(id)
+        : ''
+      : symbol.value;
+
     token.save();
   }
   return token as Token;
