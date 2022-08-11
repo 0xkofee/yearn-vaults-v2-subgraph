@@ -93,7 +93,7 @@ export class CreateVaultTransition {
         null, // token usdc value
         null // price oracle address
       ),
-      null,  // emergencyShutdown
+      null, // emergencyShutdown
       null // withDrawlQueue
     );
 

@@ -156,7 +156,6 @@ export class VaultStub extends GenericStateStub {
     this._availableDepositLimit = value;
   }
 
-
   private _emergencyShutdown: string;
   public get emergencyShutdown(): string {
     return this._emergencyShutdown;
@@ -308,7 +307,7 @@ export class VaultStub extends GenericStateStub {
     if (emergencyShutdown) {
       this._emergencyShutdown = emergencyShutdown;
     } else {
-        this._emergencyShutdown = 'false';
+      this._emergencyShutdown = 'false';
     }
     if (withDrawlQueue) {
       this._withDrawlQueue = withDrawlQueue;
