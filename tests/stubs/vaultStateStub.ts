@@ -309,31 +309,31 @@ export class VaultStub extends GenericStateStub {
       this._emergencyShutdown = emergencyShutdown;
     } else {
         this._emergencyShutdown = 'false';
-      if (withDrawlQueue) {
-        this._withDrawlQueue = withDrawlQueue;
-      } else {
-        this._withDrawlQueue = new Array();
-      }
-
-      // update stubs by triggering each field's setter
-      this.totalAssets = this._totalAssets;
-      this.totalSupply = this._totalSupply;
-      this.totalDebt = this._totalDebt;
-      this.pricePerShare = this._pricePerShare;
-      this.performanceFee = this._performanceFee;
-      this.managementFee = this._managementFee;
-      this.activation = this._activation;
-      this.apiVersion = this._apiVersion;
-      this.depositLimit = this._depositLimit;
-      this.availableDepositLimit = this._availableDepositLimit;
-      this.emergencyShutdown = this._emergencyShutdown;
-
-      // these don't have setters so we directly update them
-      this._updateStubField<Address>('token', this.wantToken.address);
-      this._updateStubField<Address>('rewards', this.rewardsAddress);
-      this._updateStubField<Address>('guardian', this.guardianAddress);
-      this._updateStubField<Address>('management', this.managementAddress);
-      this._updateStubField<Address>('governance', this.governanceAddress);
     }
+    if (withDrawlQueue) {
+      this._withDrawlQueue = withDrawlQueue;
+    } else {
+      this._withDrawlQueue = new Array();
+    }
+
+    // update stubs by triggering each field's setter
+    this.totalAssets = this._totalAssets;
+    this.totalSupply = this._totalSupply;
+    this.totalDebt = this._totalDebt;
+    this.pricePerShare = this._pricePerShare;
+    this.performanceFee = this._performanceFee;
+    this.managementFee = this._managementFee;
+    this.activation = this._activation;
+    this.apiVersion = this._apiVersion;
+    this.depositLimit = this._depositLimit;
+    this.availableDepositLimit = this._availableDepositLimit;
+    this.emergencyShutdown = this._emergencyShutdown;
+
+    // these don't have setters so we directly update them
+    this._updateStubField<Address>('token', this.wantToken.address);
+    this._updateStubField<Address>('rewards', this.rewardsAddress);
+    this._updateStubField<Address>('guardian', this.guardianAddress);
+    this._updateStubField<Address>('management', this.managementAddress);
+    this._updateStubField<Address>('governance', this.governanceAddress);
   }
 }
