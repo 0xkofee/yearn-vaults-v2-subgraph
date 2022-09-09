@@ -30,7 +30,6 @@ import {
   MockUpdateWithdrawalQueueTransition,
 } from './transitionMocks/vaultAttributeTransitions';
 
-
 import { StrategyStub } from './stubs/strategyStateStub';
 import { BigInt } from '@graphprotocol/graph-ts';
 
