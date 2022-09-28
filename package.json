@@ -43,8 +43,8 @@
     "clean": "rm -rf ./build && rm -rf ./tests/.bin && rm -rf ./generated"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.29.0",
-    "@graphprotocol/graph-ts": "0.26.0",
+    "@graphprotocol/graph-cli": "0.34.0",
+    "@graphprotocol/graph-ts": "0.28.0",
     "matchstick-as": "0.4.0",
     "mustache": "4.1.0",
     "typescript": "^4.5.2",
